@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     @PostMapping
     public ResponseEntity<Void> join(@RequestBody @Validated UserCreateRequest request) {
+
         return ResponseEntity.ok().build();
     }
 }
