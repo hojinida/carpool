@@ -1,5 +1,7 @@
 package com.project.carpool.user.application;
 
+import com.project.carpool.common.exception.CustomException;
+import com.project.carpool.common.exception.ErrorCode;
 import com.project.carpool.user.application.dto.UserCreateResponse;
 import com.project.carpool.user.domain.User;
 import com.project.carpool.user.domain.repository.UserRepository;
@@ -38,7 +40,7 @@ public class UserService {
     private void validateDuplicateUser(String email) {
         Optional<User> findUser = userRepository.findByEmail(email);
         if(findUser.isPresent()){
-            throw new CustomException(ErrorCode.DUPLICATE_USER);
+            throw new CustomException(ErrorCode.USER_DUPLICATE_EMAIL);
         }
     }
 
