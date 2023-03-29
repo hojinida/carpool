@@ -1,5 +1,7 @@
 package com.project.carpool.user.application;
 
+import com.project.carpool.auth.domain.RefreshToken;
+import com.project.carpool.auth.domain.repository.RefreshTokenRepository;
 import com.project.carpool.common.exception.CustomException;
 import com.project.carpool.common.exception.ErrorCode;
 import com.project.carpool.user.application.dto.UserCreateResponse;
@@ -16,6 +18,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+    private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     //회원 가입
