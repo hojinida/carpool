@@ -53,8 +53,6 @@ public class UserService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .name(request.getName())
-                .role(Role.USER)
-                .status(Status.ACTIVE)
                 .build();
     }
 }
