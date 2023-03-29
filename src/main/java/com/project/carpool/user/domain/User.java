@@ -17,6 +17,18 @@ public class User {
     private String name;
     private String phoneNumber;
 
+    public void updateEmail(String email){
+        this.email=email;
+    }
+    public void updatePassword(String password){
+        this.password=password;
+    }
+    public void updateName(String name){
+        this.name=name;
+    }
+    public void updatePhoneNumber(String phoneNumber){
+        this.phoneNumber=phoneNumber;
+    }
     @Builder
     public User(String email, String password, String name, String phoneNumber) {
         this.email = email;
