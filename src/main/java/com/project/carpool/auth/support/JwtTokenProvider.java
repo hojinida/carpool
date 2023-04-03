@@ -54,7 +54,7 @@ public class JwtTokenProvider {
                     .setClaims(claims) // 정보
                     .setIssuedAt(now) // 토큰 발행 시간
                     .setExpiration(new Date(now.getTime() + accessTokenValidTime)) // 토큰 만료 시간
-                    .signWith(SignatureAlgorithm.HS256, secretKey)
+                    .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS256)
                     .compact();
         }
 
@@ -80,7 +80,9 @@ public class JwtTokenProvider {
         }
 
         public String getUsername(String token) {
-            return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+            return Jwts.parserBuilder()
+                    .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8))).build()
+                    .parseClaimsJws(token).getBody().getSubject();
         }
 
         public String resolveToken(HttpServletRequest request) {
