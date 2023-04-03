@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -23,6 +24,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
