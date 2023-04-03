@@ -36,7 +36,7 @@ public class UserService {
         RefreshToken refreshToken = jwtTokenProvider.createRefreshToken(user);
 
         refreshTokenRepository.save(refreshToken);
-
+        log.info("refreshToken : {}", refreshToken.getKey());
         userRepository.save(user);
         return UserCreateResponse.builder()
                 .accessToken(accessToken)
