@@ -20,9 +20,7 @@ public class User implements UserDetails {
     private String password;
     private String name;
     private String phoneNumber;
-
     
-
     public void updateEmail(String email){
         this.email=email;
     }
