@@ -41,7 +41,6 @@ public class JwtTokenProvider {
         private final long refreshTokenValidTime = Duration.ofDays(14).toMillis(); // 만료시간 2주
 
         private final UserDetailsService userDetailsService;
-        private final RefreshTokenRepository refreshTokenRepository;
 
         @PostConstruct
         protected void init() {
@@ -75,7 +74,26 @@ public class JwtTokenProvider {
                     .value(user.getId())
                     .build();
         }
-
+        public boolean validateToken(String token) {
+            try {
+                Jwts.parserBuilder()
+                        .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8))).build()
+                        .parseClaimsJws(token);
+                return true;
+            } catch(SecurityException | MalformedJwtException e) {
+                log.error("Invalid JWT signature");
+                return false;
+            } catch(UnsupportedJwtException e) {
+                log.error("Unsupported JWT token");
+                return false;
+            } catch(IllegalArgumentException e) {
+                log.error("JWT token is invalid");
+                return false;
+            } catch (ExpiredJwtException e){
+                log.error("JWT token is expired");
+                return false;
+            }
+        }
         public Authentication getAuthentication(String token) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
             return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
