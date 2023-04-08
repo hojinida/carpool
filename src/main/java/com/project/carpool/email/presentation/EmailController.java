@@ -22,7 +22,7 @@ public class EmailController {
         emailService.createEmailToken(request.getEmail());
         return ResponseEntity.status(200).body("이메일 발송 성공");
     }
-    
+
     @PostMapping("/auth")
     public ResponseEntity<String> authEmail(@RequestBody @Validated EmailTokenRequest request) {
         emailService.verifyEmail(request);
