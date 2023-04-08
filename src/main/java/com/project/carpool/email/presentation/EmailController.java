@@ -2,6 +2,7 @@ package com.project.carpool.email.presentation;
 
 import com.project.carpool.email.application.EmailService;
 import com.project.carpool.email.presentation.dto.EmailRequestDto;
+import com.project.carpool.email.presentation.dto.TokenRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class EmailController {
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<String> authEmail(@RequestBody @Validated EmailTokenRequest request) {
+    public ResponseEntity<String> authEmail(@RequestBody @Validated TokenRequestDto request) {
         emailService.verifyEmail(request);
         return ResponseEntity.status(200).body("이메일 인증 성공");
     }

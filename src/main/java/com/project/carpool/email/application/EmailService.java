@@ -4,8 +4,10 @@ import com.project.carpool.common.exception.CustomException;
 import com.project.carpool.common.exception.ErrorCode;
 import com.project.carpool.email.domain.EmailToken;
 import com.project.carpool.email.domain.repository.EmailTokenRepository;
+import com.project.carpool.email.presentation.dto.TokenRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +21,7 @@ public class EmailService {
     private final EmailTokenRepository emailTokenRepository;
     private final EmailSenderService emailSenderService;
     @Transactional
-    public void verifyEmail(EmailTokenRequest request) throws CustomException {
+    public void verifyEmail(TokenRequestDto request) throws CustomException {
         emailTokenRepository.deleteAllByExpirationDateBefore(LocalDateTime.now());
         EmailToken emailToken = emailTokenRepository.findByToken(request.getToken())
                 .orElseThrow(() -> new CustomException(ErrorCode.EMAIL_TOKEN_NOT_FOUND));
