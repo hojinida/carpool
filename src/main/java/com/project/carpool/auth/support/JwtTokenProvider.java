@@ -1,7 +1,6 @@
 package com.project.carpool.auth.support;
 
 import com.project.carpool.auth.domain.RefreshToken;
-import com.project.carpool.auth.domain.repository.RefreshTokenRepository;
 import com.project.carpool.user.domain.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -67,11 +66,12 @@ public class JwtTokenProvider {
                     .setExpiration(new Date(now.getTime() + refreshTokenValidTime));
 
             return RefreshToken.builder()
-                    .key(Jwts.builder()
+                    .key(user.getUsername())
+                    .value(Jwts.builder()
                             .setClaims(claims) // 정보
                             .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS256)
                             .compact())
-                    .value(user.getId())
+                    .expiredTime(refreshTokenValidTime)
                     .build();
         }
         public boolean validateToken(String token) {
