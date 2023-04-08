@@ -1,7 +1,6 @@
 package com.project.carpool.email.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +16,8 @@ public class EmailToken {
     private static final int EMAIL_TOKEN_LENGTH=12;
 
     @Id
+    @Column(name = "EMAIL_TOKEN_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String token;
 
