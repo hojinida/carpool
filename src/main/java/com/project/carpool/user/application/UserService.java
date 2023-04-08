@@ -10,12 +10,14 @@ import com.project.carpool.user.domain.User;
 import com.project.carpool.user.domain.repository.UserRepository;
 import com.project.carpool.user.presentation.dto.UserCreateRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -34,7 +36,6 @@ public class UserService {
         RefreshToken refreshToken = jwtTokenProvider.createRefreshToken(user);
 
         refreshTokenRepository.save(refreshToken);
-
         userRepository.save(user);
         return UserCreateResponse.builder()
                 .accessToken(accessToken)

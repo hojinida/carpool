@@ -1,7 +1,6 @@
 package com.project.carpool.auth.support;
 
 import com.project.carpool.auth.domain.RefreshToken;
-import com.project.carpool.auth.domain.repository.RefreshTokenRepository;
 import com.project.carpool.user.domain.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -14,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
@@ -39,7 +40,6 @@ public class JwtTokenProvider {
         private final long refreshTokenValidTime = Duration.ofDays(14).toMillis(); // 만료시간 2주
 
         private final UserDetailsService userDetailsService;
-        private final RefreshTokenRepository refreshTokenRepository;
 
         @PostConstruct
         protected void init() {
@@ -66,14 +66,34 @@ public class JwtTokenProvider {
                     .setExpiration(new Date(now.getTime() + refreshTokenValidTime));
 
             return RefreshToken.builder()
-                    .key(Jwts.builder()
+                    .key(user.getUsername())
+                    .value(Jwts.builder()
                             .setClaims(claims) // 정보
                             .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS256)
                             .compact())
-                    .value(user.getId())
+                    .expiredTime(refreshTokenValidTime)
                     .build();
         }
-
+        public boolean validateToken(String token) {
+            try {
+                Jwts.parserBuilder()
+                        .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8))).build()
+                        .parseClaimsJws(token);
+                return true;
+            } catch(SecurityException | MalformedJwtException e) {
+                log.error("Invalid JWT signature");
+                return false;
+            } catch(UnsupportedJwtException e) {
+                log.error("Unsupported JWT token");
+                return false;
+            } catch(IllegalArgumentException e) {
+                log.error("JWT token is invalid");
+                return false;
+            } catch (ExpiredJwtException e){
+                log.error("JWT token is expired");
+                return false;
+            }
+        }
         public Authentication getAuthentication(String token) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
             return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
