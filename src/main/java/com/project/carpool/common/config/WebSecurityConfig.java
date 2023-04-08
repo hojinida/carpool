@@ -46,7 +46,7 @@ public class WebSecurityConfig {
                 .accessDeniedHandler(tokenAccessDeniedHandler)
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/login","/api/v1/user","/auth/**", "/oauth2/**","/login/oauth2/code/**").permitAll()
+                .requestMatchers("/email","/email/*","/login","/api/v1/user","/auth/**", "/oauth2/**","/login/oauth2/code/**").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
