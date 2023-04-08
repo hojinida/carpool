@@ -1,6 +1,7 @@
 package com.project.carpool.email.presentation;
 
 import com.project.carpool.email.application.EmailService;
+import com.project.carpool.email.presentation.dto.EmailRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class EmailController {
     private final EmailService emailService;
 
     @PostMapping
-    public ResponseEntity<String> sendEmail(@RequestBody @Validated UserEmailRequest request){
+    public ResponseEntity<String> sendEmail(@RequestBody @Validated EmailRequestDto request){
         emailService.createEmailToken(request.getEmail());
         return ResponseEntity.status(200).body("이메일 발송 성공");
     }
