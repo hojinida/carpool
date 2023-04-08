@@ -14,7 +14,7 @@ public class CustomExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<ErrorResponse> handleCustomException(MethodArgumentNotValidException e) {
+    protected ResponseEntity<ErrorResponse> handleValidException(MethodArgumentNotValidException e) {
         return ErrorResponse.toResponseEntity(ErrorCode.INVALID_INPUT_VALUE);
     }
 }
