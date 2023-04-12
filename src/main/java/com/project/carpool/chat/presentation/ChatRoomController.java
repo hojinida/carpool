@@ -1,9 +1,12 @@
 package com.project.carpool.chat.presentation;
 
+import com.project.carpool.chat.domain.ChatRoom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 c
 
 @Controller
@@ -19,7 +22,6 @@ public class ChatRoomController {
     }
     // 모든 채팅방 목록 반환
     @GetMapping("/rooms")
-    @ResponseBody
     public List<ChatRoom> room(Model model) {
         return chatService.findAllRoom();
     }
