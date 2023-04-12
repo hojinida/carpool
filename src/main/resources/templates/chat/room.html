@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Rooms</title>
+    <link rel="stylesheet" th:href="@{/css/chat.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Chat Rooms</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Created At</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="room : ${rooms}">
+            <td th:text="${room.id}"></td>
+            <td th:text="${room.name}"></td>
+            <td th:text="${room.createdAt}"></td>
+            <td><a class="btn btn-primary" th:href="@{'/chat/room/enter/' + ${room.id}}">Enter</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <form th:action="@{/chat/room}" method="post">
+        <div class="form-group">
+            <label for="name">Create a new room</label>
+            <input type="text" class="form-control" id="name" name="name">
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+</div>
+</body>
+</html>
