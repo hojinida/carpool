@@ -32,6 +32,11 @@ public enum ErrorCode {
     CHAT_ALREADY_EXIST(400, "H002", "Chat Already Exist"),
     CHAT_NOT_MATCH(400, "H003", "Chat Not Match"),
     CHAT_NOT_AUTHORIZED(400, "H004", "Chat Not Authorized"),
+    //mail
+    MAIL_NOT_FOUND(400, "M001", "Mail Not Found"),
+    MAIL_ALREADY_EXIST(400, "M002", "Mail Already Exist"),
+    MAIL_NOT_MATCH(400, "M003", "Mail Not Match"),
+    MAIL_NOT_AUTHORIZED(400, "M004", "Mail Not Authorized"),
     // ChatMessage
     CHAT_MESSAGE_NOT_FOUND(400, "M001", "ChatMessage Not Found"),
     CHAT_MESSAGE_ALREADY_EXIST(400, "M002", "ChatMessage Already Exist"),
@@ -40,7 +45,6 @@ public enum ErrorCode {
     // ChatRoom
     CHAT_ROOM_NOT_FOUND(400, "R001", "ChatRoom Not Found"),
     CHAT_ROOM_ALREADY_EXIST(400, "R002", "ChatRoom Already Exist");
-
     ErrorCode(int status, String code, String message) {
         this.status = status;
         this.code = code;

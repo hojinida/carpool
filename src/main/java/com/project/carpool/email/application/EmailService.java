@@ -24,7 +24,7 @@ public class EmailService {
     public void verifyEmail(TokenRequestDto request) throws CustomException {
         emailTokenRepository.deleteAllByExpirationDateBefore(LocalDateTime.now());
         EmailToken emailToken = emailTokenRepository.findByToken(request.getToken())
-                .orElseThrow(() -> new CustomException(ErrorCode.EMAIL_TOKEN_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.MAIL_NOT_FOUND));
 
         emailTokenRepository.delete(emailToken);
     }
