@@ -1,38 +1,33 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Chat Rooms</title>
-    <link rel="stylesheet" th:href="@{/css/chat.css}" />
+    <title>카풀 모집 방</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
 </head>
 <body>
-<div class="container">
-    <h1>Chat Rooms</h1>
-    <table class="table">
+<div class="container mt-3">
+    <h2 class="mb-3">Chat Room List</h2>
+    <table class="table table-striped">
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Created At</th>
-            <th></th>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Created Date</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="room : ${rooms}">
-            <td th:text="${room.id}"></td>
-            <td th:text="${room.name}"></td>
-            <td th:text="${room.createdAt}"></td>
-            <td><a class="btn btn-primary" th:href="@{'/chat/room/enter/' + ${room.id}}">Enter</a></td>
+            <th scope="row" th:text="${room.id}"></th>
+            <td th:text="${room.roomName}"></td>
+            <td th:text="${room.description}"></td>
+            <td th:text="${room.createdDate}"></td>
         </tr>
         </tbody>
     </table>
-    <form th:action="@{/chat/room}" method="post">
-        <div class="form-group">
-            <label for="name">Create a new room</label>
-            <input type="text" class="form-control" id="name" name="name">
-        </div>
-        <button type="submit" class="btn btn-primary">Create</button>
-    </form>
 </div>
 </body>
 </html>

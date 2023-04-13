@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Room Detail</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center mb-4">Room <span th:text="${roomName}"></span></h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Messages</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled" id="message-list">
+                        <li th:each="message : ${messages}" class="mb-2">
+                            <span class="text-primary" th:text="${message.sender}"></span>
+                            <span class="text-muted" th:text="${message.createdAt}"></span>
+                            <p class="mb-0" th:text="${message.content}"></p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">New Message</h4>
+                </div>
+                <div class="card-body">
+                    <form id="message-form">
+                        <div class="form-group">
+                            <input type="text" name="content" class="form-control" placeholder="Enter message">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="/js/app.js"></script>
+
+</body>
+</html>
