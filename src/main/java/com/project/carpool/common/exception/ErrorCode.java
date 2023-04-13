@@ -1,5 +1,6 @@
 package com.project.carpool.common.exception;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -44,7 +45,13 @@ public enum ErrorCode {
     CHAT_MESSAGE_NOT_AUTHORIZED(400, "M004", "ChatMessage Not Authorized"),
     // ChatRoom
     CHAT_ROOM_NOT_FOUND(400, "R001", "ChatRoom Not Found"),
+<<<<<<< HEAD
     CHAT_ROOM_ALREADY_EXIST(400, "R002", "ChatRoom Already Exist");
+=======
+    CHAT_ROOM_ALREADY_EXIST(400, "R002", "ChatRoom Already Exist"),
+    // Email
+    EMAIL_TOKEN_NOT_FOUND(400, "E001", "Email Token Not Found");
+>>>>>>> 6b4c42c2946f3c21dfeafce58b142dddd0e2be07
     ErrorCode(int status, String code, String message) {
         this.status = status;
         this.code = code;
