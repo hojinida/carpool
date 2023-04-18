@@ -1,6 +1,5 @@
 package com.project.carpool.common.exception;
 
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -18,6 +17,22 @@ public enum ErrorCode {
     USER_NOT_MATCH(400, "U003", "User Not Match"),
     USER_NOT_AUTHORIZED(400, "U004", "User Not Authorized"),
     USER_DUPLICATE_EMAIL(400, "U005", "User Duplicate Email"),
+    //Password
+    PASSWORD_NOT_MATCH(400, "P001", "Password Not Match"),
+    //auth
+    AUTH_NOT_FOUND(400, "A001", "Auth Not Found"),
+    AUTH_ALREADY_EXIST(400, "A002", "Auth Already Exist"),
+    AUTH_NOT_MATCH(400, "A003", "Auth Not Match"),
+    AUTH_NOT_AUTHORIZED(400, "A004", "Auth Not Authorized"),
+    //jwt
+    JWT_ACCESS_TOKEN_EXPIRED(401,"T006","ACCESS TOKEN EXPIRED"),
+    JWT_REFRESH_TOKEN_EXPIRED(401,"T007","REFRESH TOKEN EXPIRED"),
+    JWT_UNAUTHORIZED(401,"T001","UNAUTHORIZED TOKEN"),
+    JWT_INVALID_SIGNATURE(401,"T002","INVALID SIGNATURE"),
+    JWT_UNSUPPORTED(401,"T003","UNSUPPORTED TOKEN"),
+    JWT_CLAIMS_EMPTY(401,"T004","CLAIMS_EMPTY"),
+    JWT_BLACKLIST(401,"T005","TOKEN IS BLACKLIST"),
+
     // Post
     POST_NOT_FOUND(400, "P001", "Post Not Found"),
     POST_ALREADY_EXIST(400, "P002", "Post Already Exist"),
@@ -45,13 +60,7 @@ public enum ErrorCode {
     CHAT_MESSAGE_NOT_AUTHORIZED(400, "M004", "ChatMessage Not Authorized"),
     // ChatRoom
     CHAT_ROOM_NOT_FOUND(400, "R001", "ChatRoom Not Found"),
-<<<<<<< HEAD
     CHAT_ROOM_ALREADY_EXIST(400, "R002", "ChatRoom Already Exist");
-=======
-    CHAT_ROOM_ALREADY_EXIST(400, "R002", "ChatRoom Already Exist"),
-    // Email
-    EMAIL_TOKEN_NOT_FOUND(400, "E001", "Email Token Not Found");
->>>>>>> 6b4c42c2946f3c21dfeafce58b142dddd0e2be07
     ErrorCode(int status, String code, String message) {
         this.status = status;
         this.code = code;

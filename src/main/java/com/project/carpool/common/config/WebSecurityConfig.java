@@ -34,10 +34,14 @@ public class WebSecurityConfig {
         http
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
+                .headers()
+                .frameOptions()
+                .disable()
+                .and()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .formLogin().loginPage("/login")
+                .formLogin().loginPage("/")
                 .and()
                 .httpBasic().disable()
                 .exceptionHandling()
@@ -45,12 +49,19 @@ public class WebSecurityConfig {
                 .accessDeniedHandler(tokenAccessDeniedHandler)
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/email","/email/*","/login","/api/v1/user","/auth/**", "/oauth2/**","/login/oauth2/code/**").permitAll()
+                .requestMatchers("/","/ws/**","index.html","signup.html","/chat/room/enter/**","/email","/email/*","/api/v1/user","/auth/**","/chat/rooms").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web)->{
+//            web.ignoring().requestMatchers("/ws/**");
+//        };
+//    }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {

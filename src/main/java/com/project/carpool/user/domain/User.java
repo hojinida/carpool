@@ -1,5 +1,6 @@
 package com.project.carpool.user.domain;
 
+import com.project.carpool.room.domain.Room;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +21,10 @@ public class User implements UserDetails {
     private String password;
     private String name;
     private String phoneNumber;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "roomId")
+    private Room room;
     
     public void updateEmail(String email){
         this.email=email;

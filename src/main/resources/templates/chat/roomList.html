@@ -2,21 +2,96 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Chat Room List</title>
+    <title>카풀 모집방</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .btn-secondary {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #0069d9;
+            border-color: #0069d9;
+            color: white;
+        }
+
+        .modal-title {
+            font-weight: bold;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        table {
+            margin-bottom: 30px;
+        }
+
+        input, button#create-room-button {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        button#create-room-button {
+            margin-top: 20px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        button#create-room-button:hover {
+            background-color: #0069d9;
+            text-decoration: none;
+            color: white;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-    <h2>Chat Rooms</h2>
+    <h2>카풀 모집방</h2>
     <table class="table">
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Created At</th>
+            <th>방 번호</th>
+            <th>방 제목</th>
+            <th>마감 시간</th>
+            <th>현재 인원</th>
             <th></th>
         </tr>
         </thead>
@@ -24,27 +99,165 @@
         <tr th:each="room : ${rooms}">
             <td th:text="${room.id}"></td>
             <td th:text="${room.roomName}"></td>
-            <td th:text="${room.createdAt}"></td>
+            <td th:text="${room.endTime}"></td>
+            <td th:text="${room.numberOfPeople}"></td>
             <td>
-                <a th:href="@{/chat/room/enter/{id}(id=${room.id})}" class="btn btn-primary">Enter Room</a>
+                <a th:href="@{/chat/room/enter/{id}(id=${room.id})}" class="btn btn-primary" th:data-room-id="${room.id}">입장</a>
+
             </td>
         </tr>
         </tbody>
     </table>
     <div class="text-center">
-        <a th:href="@{/chat/room}" class="btn btn-secondary">Create Room</a>
+        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#createRoomModal">
+            채팅방 생성
+        </button>
+    </div>
+</div>
+
+<!-- Create Room Modal -->
+<div class="modal fade" id="createRoomModal" tabindex="-1" role="dialog" aria-labelledby="createRoomModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createRoomModalLabel">채팅방 생성</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- createRoom.html 파일 내용 시작 -->
+                <h2>채팅방 생성</h2>
+                <form id="create-room-form">
+                    <label for="roomName">방 제목:</label>
+                    <input type="text" id="roomName" name="roomName" required><br><br>
+
+                    <label for="startLocation">출발 위치:</label>
+                    <input type="text" id="startLocation" name="startLocation" required><br><br>
+
+                    <label for="endLocation">도착 위치:</label>
+                    <input type="text" id="endLocation" name="endLocation" required><br><br>
+
+                    <label for="startTime">출발 시간:</label>
+                    <input type="time" id="startTime" name="startTime" required><br><br>
+
+                    <label for="endTime">마감 시간:</label>
+                    <input type="time" id="endTime" name="endTime" required><br><br>
+
+                    <button type="submit" id="create-room-button">생성</button>
+                </form>
+                <!-- createRoom.html 파일 내용 끝 -->
+            </div>
+        </div>
     </div>
 </div>
 
 <!-- Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0Mqd"
         crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+
+<!-- Create Room Modal에 추가할 스크립트 코드 시작 -->
+<script type="text/javascript">
+$(document).ready(function() {
+    console.log("Document is ready");
+    $("#create-room-form").submit(function(event) {
+        console.log("Form submitted");
+        // 폼 기본 동작 방지
+        event.preventDefault();
+
+        // 입력된 데이터 가져오기
+        var roomName = $("#roomName").val();
+        var startLocation = $("#startLocation").val();
+        var endLocation = $("#endLocation").val();
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+
+        // JSON 형식으로 데이터 변환
+        var requestData = {
+            "roomName": roomName,
+            "startLocation": startLocation,
+            "endLocation": endLocation,
+            "startTime": startTime,
+            "endTime": endTime
+        };
+
+        // AJAX 요청 보내기
+        let accessToken = localStorage.getItem('accessToken');
+        sendAjaxRequest("/chat/room", "POST", requestData, accessToken)
+            .then(response => {
+                // 서버 응답 처리
+                console.log(response);
+                $('#createRoomModal').modal('hide');
+                location.reload();
+            })
+            .catch(error => {
+                // 서버 요청 오류 처리
+                console.error(error);
+            });
+    });
+
+    $(document).on('click', '.btn-primary', function() {
+        let accessToken = localStorage.getItem('accessToken');
+        let roomId = $(this).data('room-id');
+
+        $.ajax({
+            url: "/chat/room/enter/" + roomId,
+            type: "GET",
+            contentType: "application/json",
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            },
+            success: function(response) {
+                // 서버 응답 처리
+                console.log(response);
+            },
+            error: function(error) {
+                // 서버 요청 오류 처리
+                console.error(error);
+            }
+        });
+    });
+});
+
+async function sendAjaxRequest(url, type, data, accessToken) {
+    const response = await $.ajax({
+        url: url,
+        type: type,
+        contentType: "application/json",
+        headers: {
+            'Authorization': 'Bearer ' + accessToken
+        },
+        data: JSON.stringify(data),
+        statusCode: {
+            401: async function() {
+                const tokenRefreshed = await refreshAccessToken();
+
+                if (tokenRefreshed) {
+                    accessToken = localStorage.getItem('accessToken');
+                    return await $.ajax({
+                        url: url,
+                        type: type,
+                        contentType: "application/json",
+                        headers: {
+                            'Authorization': 'Bearer ' + accessToken
+                        },
+                        data: JSON.stringify(data),
+                    });
+                }
+            }
+        }
+    });
+    return response;
+}
+
+</script>
 </body>
 </html>
+

@@ -1,9 +1,5 @@
 package com.project.carpool.auth.support;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 6b4c42c2946f3c21dfeafce58b142dddd0e2be07
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

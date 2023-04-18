@@ -24,11 +24,7 @@ public class EmailService {
     public void verifyEmail(TokenRequestDto request) throws CustomException {
         emailTokenRepository.deleteAllByExpirationDateBefore(LocalDateTime.now());
         EmailToken emailToken = emailTokenRepository.findByToken(request.getToken())
-<<<<<<< HEAD
                 .orElseThrow(() -> new CustomException(ErrorCode.MAIL_NOT_FOUND));
-=======
-                .orElseThrow(() -> new CustomException(ErrorCode.EMAIL_TOKEN_NOT_FOUND));
->>>>>>> 6b4c42c2946f3c21dfeafce58b142dddd0e2be07
 
         emailTokenRepository.delete(emailToken);
     }
@@ -41,6 +37,7 @@ public class EmailService {
 
         // 이메일 전송
         SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom("opqrs1103@gmail.com");
         mailMessage.setTo(receiverEmail);
         mailMessage.setSubject("회원가입 이메일 인증");
         mailMessage.setText(emailToken.getToken());
