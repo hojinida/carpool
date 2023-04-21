@@ -41,7 +41,7 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .formLogin().loginPage("/")
+                .formLogin().loginPage("/").permitAll()
                 .and()
                 .httpBasic().disable()
                 .exceptionHandling()
@@ -49,19 +49,12 @@ public class WebSecurityConfig {
                 .accessDeniedHandler(tokenAccessDeniedHandler)
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/","/ws/**","index.html","signup.html","/chat/room/enter/**","/email","/email/*","/api/v1/user","/auth/**","/chat/rooms").permitAll()
+                .requestMatchers("/","/ws/**","index.html","signup.html","roomdetail.html","/chat/room/enter/**","/email","/email/*","/api/v1/user","/auth/**","/chat/rooms").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return (web)->{
-//            web.ignoring().requestMatchers("/ws/**");
-//        };
-//    }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
@@ -76,6 +69,7 @@ public class WebSecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

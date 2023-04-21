@@ -4,7 +4,6 @@ import com.project.carpool.message.domain.Message;
 import com.project.carpool.message.domain.application.MessageService;
 import com.project.carpool.room.application.RoomService;
 import com.project.carpool.room.application.dto.RoomResponse;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -38,7 +37,6 @@ public class MessageController {
     }
     @GetMapping("/rooms/{roomId}/messages")
     public List<Message> getPreviousMessages(@PathVariable Long roomId) {
-        // 새로운 메시지부터 오래된 메시지 순으로 정렬하여 반환합니다.
         return messageService.getPreviousMessages(roomId);
     }
 }

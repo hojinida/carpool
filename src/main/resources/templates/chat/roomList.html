@@ -102,7 +102,8 @@
             <td th:text="${room.endTime}"></td>
             <td th:text="${room.numberOfPeople}"></td>
             <td>
-                <a th:href="@{/chat/room/enter/{id}(id=${room.id})}" class="btn btn-primary" th:data-room-id="${room.id}">입장</a>
+                <a th:href="@{/chat/room/enter/{id}(id=${room.id})}" class="btn btn-primary enter-room" th:data-room-id="${room.id}">입장</a>
+
 
             </td>
         </tr>
@@ -167,6 +168,8 @@
 <script type="text/javascript">
 $(document).ready(function() {
     console.log("Document is ready");
+    let accessToken = localStorage.getItem('accessToken');
+
     $("#create-room-form").submit(function(event) {
         console.log("Form submitted");
         // 폼 기본 동작 방지
@@ -188,35 +191,37 @@ $(document).ready(function() {
             "endTime": endTime
         };
 
-        // AJAX 요청 보내기
-        let accessToken = localStorage.getItem('accessToken');
-        sendAjaxRequest("/chat/room", "POST", requestData, accessToken)
-            .then(response => {
-                // 서버 응답 처리
-                console.log(response);
-                $('#createRoomModal').modal('hide');
-                location.reload();
-            })
-            .catch(error => {
-                // 서버 요청 오류 처리
-                console.error(error);
-            });
-    });
-
-    $(document).on('click', '.btn-primary', function() {
-        let accessToken = localStorage.getItem('accessToken');
-        let roomId = $(this).data('room-id');
-
         $.ajax({
-            url: "/chat/room/enter/" + roomId,
+            url: "/api/v1/user/id",
             type: "GET",
-            contentType: "application/json",
             headers: {
                 'Authorization': 'Bearer ' + accessToken
             },
             success: function(response) {
-                // 서버 응답 처리
-                console.log(response);
+                // userId 가져오기
+                let userId = response
+                // AJAX 요청 보내기
+                $.ajax({
+                    url: "/chat/room",
+                    type: "POST",
+                    data: JSON.stringify(requestData), // 데이터를 JSON 문자열로 변환
+                    contentType: "application/json", // 서버에 전송할 데이터의 Content-Type 설정
+                    dataType: "json", // 서버에서 반환되는 데이터의 유형 설정
+                    headers: {
+                        'Authorization': 'Bearer ' + accessToken
+                    },
+                    success: function(response) {
+                        // 서버 응답 처리
+                        console.log(response);
+                        let newRoomId = response.id;
+                        // 새로운 URL로 이동
+                        window.location.href =  "/chat/room/enter/" + newRoomId + "?userId=" + userId;
+                    },
+                    error: function(error) {
+                        // 서버 요청 오류 처리
+                        console.error(error);
+                    }
+                });
             },
             error: function(error) {
                 // 서버 요청 오류 처리
@@ -224,39 +229,26 @@ $(document).ready(function() {
             }
         });
     });
-});
 
-async function sendAjaxRequest(url, type, data, accessToken) {
-    const response = await $.ajax({
-        url: url,
-        type: type,
-        contentType: "application/json",
-        headers: {
-            'Authorization': 'Bearer ' + accessToken
-        },
-        data: JSON.stringify(data),
-        statusCode: {
-            401: async function() {
-                const tokenRefreshed = await refreshAccessToken();
+    $(".enter-room").click(function() {
+        event.preventDefault();
 
-                if (tokenRefreshed) {
-                    accessToken = localStorage.getItem('accessToken');
-                    return await $.ajax({
-                        url: url,
-                        type: type,
-                        contentType: "application/json",
-                        headers: {
-                            'Authorization': 'Bearer ' + accessToken
-                        },
-                        data: JSON.stringify(data),
-                    });
-                }
+        const roomId = $(this).data("room-id");
+        $.ajax({
+            url: "/api/v1/user/id",
+            type: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            },
+            success: function(response) {
+                // userId 가져오기
+                let userId = response
+                // 서버로 요청을 보내는 함수를 호출하고 이동할 URL을 받아옵니다.
+                window.location.href = "/chat/room/enter/" + roomId + "?userId=" + userId;
             }
-        }
+        });
     });
-    return response;
-}
-
+});
 </script>
 </body>
 </html>

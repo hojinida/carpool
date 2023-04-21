@@ -1,11 +1,13 @@
 package com.project.carpool.room.presentation;
 
 import com.project.carpool.room.application.RoomService;
+import com.project.carpool.room.application.dto.RoomParticipantsResponse;
 import com.project.carpool.room.application.dto.RoomResponse;
+import com.project.carpool.room.domain.Room;
 import com.project.carpool.room.presentation.dto.RoomCreateRequest;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,27 +30,52 @@ public class RoomController {
     }
     // 채팅방 생성
     @PostMapping("/room")
-    public String createRoom(@RequestBody RoomCreateRequest request, Model model) {
-        log.info("채팅방 생성");
-        roomService.createRoom(request);
-        model.addAttribute("success", true);
-        return "redirect:/chat/rooms";
+    public ResponseEntity<RoomResponse> createRoom(@RequestBody RoomCreateRequest request) {
+        Room room=roomService.createRoom(request);
+        return ResponseEntity.ok().body(
+                RoomResponse.builder()
+                        .id(room.getId())
+                        .roomName(room.getRoomName())
+                        .endTime(room.getEndTime())
+                        .numberOfPeople(room.getNumberOfPeople())
+                        .build()
+        );
     }
     // 채팅방 입장 화면
     @GetMapping("/room/enter/{roomId}")
-    public String roomDetail(Model model, @PathVariable Long roomId) {
-        log.info("채팅방 입장");
-        RoomResponse room = roomService.findById(roomId);
+    public String roomDetail(Model model, @PathVariable Long roomId, @RequestParam Long userId) {
+        RoomResponse room = roomService.enterRoom(roomId,userId);
         model.addAttribute("roomId", roomId);
+        model.addAttribute("userId", userId); // userId를 Model에 추가
         model.addAttribute("roomName", room.getRoomName());
         model.addAttribute("messages", room.getMessages());
         return "chat/roomdetail";
     }
-    // 특정 채팅방 조회
-    @GetMapping("/room/{roomId}")
-    public String roomInfo(Model model, @PathVariable Long roomId) {
-        RoomResponse room = roomService.findById(roomId);
-        model.addAttribute("room", room);
-        return "chat/roomInfo";
+
+    // 채팅방 나가기
+    @GetMapping("/room/exit/{roomId}")
+    public void exitRoom(@PathVariable Long roomId) {
+        roomService.exitRoom(roomId);
+    }
+
+    //채팅방 삭제
+    @DeleteMapping("/room/{roomId}")
+    public ResponseEntity<Void> deleteRoom(@PathVariable Long roomId) {
+        roomService.deleteRoom(roomId);
+        return ResponseEntity.ok().build();
+    }
+
+    //참여인원 조회
+    @GetMapping("/rooms/{roomId}/participants")
+    public ResponseEntity<RoomParticipantsResponse> getParticipants(@PathVariable Long roomId) {
+        log.info("참여인원 조회");
+        return ResponseEntity.ok().body(roomService.getParticipants(roomId));
+    }
+
+    //방장 확인
+    @GetMapping("/rooms/{roomId}/owner")
+    public ResponseEntity<Long> getOwner(@PathVariable Long roomId) {
+        log.info("방장 확인");
+        return ResponseEntity.ok().body(roomService.getOwnerId(roomId));
     }
 }

@@ -25,14 +25,13 @@ public class StompHandler implements ChannelInterceptor {
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-        // JWT 토큰에서 인증 정보 추출
+
         String accessToken = accessor.getFirstNativeHeader("Authorization");
         if (accessToken != null && accessToken.startsWith("Bearer ")) {
             accessToken = accessToken.substring(7);
         }
         if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) {
             Authentication authentication = tokenProvider.getAuthentication(accessToken);
-
             // StompHeaderAccessor에 인증 정보 저장
             accessor.setUser(authentication);
         }

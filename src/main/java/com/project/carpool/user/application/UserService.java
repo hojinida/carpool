@@ -3,6 +3,7 @@ package com.project.carpool.user.application;
 import com.project.carpool.auth.domain.RefreshToken;
 import com.project.carpool.auth.domain.repository.RefreshTokenRepository;
 import com.project.carpool.auth.support.JwtTokenProvider;
+import com.project.carpool.auth.support.SecurityUtil;
 import com.project.carpool.common.exception.CustomException;
 import com.project.carpool.common.exception.ErrorCode;
 import com.project.carpool.user.application.dto.UserCreateResponse;
@@ -59,5 +60,12 @@ public class UserService {
                 .name(request.getName())
                 .phoneNumber(request.getPhoneNumber())
                 .build();
+    }
+
+    //회원 아이디
+    public Long getCurrentUserId(){
+        User user =userRepository.findByEmail(SecurityUtil.getCurrentUserEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        return user.getId();
     }
 }

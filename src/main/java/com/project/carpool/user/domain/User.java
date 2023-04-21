@@ -25,18 +25,8 @@ public class User implements UserDetails {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roomId")
     private Room room;
-    
-    public void updateEmail(String email){
-        this.email=email;
-    }
-    public void updatePassword(String password){
-        this.password=password;
-    }
-    public void updateName(String name){
-        this.name=name;
-    }
-    public void updatePhoneNumber(String phoneNumber){
-        this.phoneNumber=phoneNumber;
+    public void updateRoom(Room room){
+        this.room = room;
     }
     @Builder
     public User(String email, String password, String name, String phoneNumber) {
