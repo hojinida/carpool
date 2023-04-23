@@ -246,7 +246,8 @@ document.getElementById('leave-room-btn').addEventListener('click', function() {
 async function checkRoomOwner() {
     const response = await sendAuthenticatedRequest("/chat"+"/rooms/" + roomId + "/owner", "GET", null, accessToken);
     const currentUserId = await getCurrentUserId();
-    if (response.ownerId === currentUserId) { // 현재 사용자 ID를 확인할 수 있는 코드로 교체하세요.
+    if (response === currentUserId) { // 현재 사용자 ID를 확인할 수 있는 코드로 교체하세요.
+        console.log('방을 만든 사용자입니다.');
         return true;
     }
     return false;
@@ -254,7 +255,7 @@ async function checkRoomOwner() {
 
 async function getCurrentUserId() {
     const userInfo = await sendAuthenticatedRequest("/api/v1/user/id", "GET", null, accessToken);
-    return userInfo.id;
+    return userInfo;
 }
 window.onload = function () {
     history.pushState({ page: 'chat_room' }, '', '');
