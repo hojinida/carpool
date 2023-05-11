@@ -1,0 +1,40 @@
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+#auth-input {
+    display: none;
+}
+
+.btn-default {
+    background-color: #000000;
+    border-color: #000000;
+    color: white;
+    width: 100%;
+    font-weight: bold;
+}
+
+.btn-default:hover {
+    background-color: #909090;
+    border-color: #909090;
+    color: white;
+}

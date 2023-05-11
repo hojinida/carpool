@@ -6,48 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 부트스트랩 CSS 링크 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .container {
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        #auth-input {
-            display: none;
-        }
-
-        .btn-default {
-            background-color: #007bff;
-            border-color: #007bff;
-            color: white;
-            width: 100%;
-            font-weight: bold;
-        }
-
-        .btn-default:hover {
-            background-color: #0069d9;
-            border-color: #0069d9;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="signup.css">
 </head>
 <body>
 <div class="container">
@@ -65,6 +24,7 @@
                     <button class="btn btn-default" type="button" id="send-email">인증</button>
                 </span>
             </div>
+            <span class="text-danger" id="email-check-msg"></span>
         </div>
         <div class="form-group" style="display: none" id="auth-input">
             <label for="auth-code">인증코드:</label>
@@ -82,10 +42,12 @@
         <div class="form-group">
             <label for="confirm-password">비밀번호 확인:</label>
             <input type="password" class="form-control" id="confirm-password" placeholder="비밀번호를 다시 입력하세요" name="confirm-password" required>
+            <span class="text-danger" id="password-check-msg"></span>
         </div>
         <div class="form-group">
             <label for="phone">전화번호:</label>
             <input type="text" class="form-control" id="phone" placeholder="전화번호를 입력하세요" name="phone" required>
+            <span class="text-danger" id="phone-check-msg"></span>
         </div>
         <button type="submit" class="btn btn-default" id="submitBtn">회원가입</button>
     </form>
@@ -93,75 +55,6 @@
 <!-- 부트스트랩 JS 링크 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script>
-$('#confirm-password').on('input', function() {
-        const password = $('#password').val();
-        const confirmPassword = $('#confirm-password').val();
-
-        if (password !== confirmPassword) {
-            $('#submitBtn').prop('disabled', true);
-            $('#submitBtn').text('비밀번호가 일치하지 않습니다');
-        } else {
-            $('#submitBtn').prop('disabled', false);
-            $('#submitBtn').text('회원가입');
-        }
-    });
-
-// 이메일 인증 요청
-$('#send-email').on("click", function() {
-    const email = $('#email').val();
-    $.ajax({
-        url: "/email",
-        type: "POST",
-        headers: {'Content-Type': 'application/json'},
-        data: JSON.stringify({"email": email}),
-        success: function(data) {
-            alert("인증번호가 전송되었습니다.");
-            $("#auth-input").show();
-            console.log(data);
-        },
-        error: function(e) {
-            console.log(e);
-        }
-    })
-})
-
-// 이메일 인증 확인
-$('#verify-auth-code').on("click", function() {
-    const authCode = $('#auth-code').val();
-    $.ajax({
-        url: "/email/auth",
-        type: "POST",
-        headers: {'Content-Type': 'application/json'},
-        data: JSON.stringify({"token": authCode}),
-        success: function(data) {
-            alert("이메일 인증 성공");
-            $("#auth-input").hide();
-            console.log(data);
-        },
-        error: function(e) {
-            console.log(e);
-        }
-    })
-})
-
-// 폼 전송
-$('#register-form').submit(function(e) {
-    e.preventDefault();
-    $.ajax({
-        url: "/api/v1/user",
-        type: "POST",
-        headers: {'Content-Type': 'application/json'},
-        data: JSON.stringify({"email": $('#email').val(), "password": $('#password').val(), "name": $('#name').val(), "phoneNumber": $('#phone').val()}),
-        success: function(data) {
-        alert("회원가입 성공");
-            window.location.href = "index.html";
-        },
-        error: function(e) {
-            console.log(e);
-        }
-    })
-})
-</script>
+<script src="signup.js"></script>
 </body>
 </html>
