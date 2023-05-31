@@ -31,6 +31,9 @@ public class User implements UserDetails {
     public void updateName(String name){
         this.name=name;
     }
+    public void updatePassword(String password){
+        this.password=password;
+    }
     @Builder
     public User(String email, String password, String name, String phoneNumber) {
         this.email = email;

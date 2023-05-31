@@ -11,6 +11,7 @@ import com.project.carpool.user.domain.User;
 import com.project.carpool.user.domain.repository.UserRepository;
 import com.project.carpool.user.presentation.dto.UserCreateRequest;
 import com.project.carpool.user.presentation.dto.UserNameUpdateRequest;
+import com.project.carpool.user.presentation.dto.UserPasswordUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -75,5 +76,19 @@ public class UserService {
         User user = userRepository.findByEmail(SecurityUtil.getCurrentUserEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         user.updateName(request.getName());
+    }
+
+    //회원 비밀번호 변경
+    public void updatePassword(UserPasswordUpdateRequest request){
+        User user = userRepository.findByEmail(SecurityUtil.getCurrentUserEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        user.updatePassword(passwordEncoder.encode(request.getPassword()));
+    }
+
+    //회원 비밀번호 확인
+    public boolean checkPassword(UserPasswordUpdateRequest request){
+        User user = userRepository.findByEmail(SecurityUtil.getCurrentUserEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        return passwordEncoder.matches(request.getPassword(), user.getPassword());
     }
 }
