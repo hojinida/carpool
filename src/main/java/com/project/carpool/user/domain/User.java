@@ -22,6 +22,9 @@ public class User implements UserDetails {
     private String name;
     private String phoneNumber;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    private Star star;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roomId")
     private Room room;
@@ -40,6 +43,7 @@ public class User implements UserDetails {
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
+        this.star = Star.builder().point(0L).number(0L).build();
     }
 
     @Override

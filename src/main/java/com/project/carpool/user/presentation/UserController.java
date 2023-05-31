@@ -1,6 +1,7 @@
 package com.project.carpool.user.presentation;
 
 import com.project.carpool.user.application.UserService;
+import com.project.carpool.user.presentation.dto.StarUpdateRequest;
 import com.project.carpool.user.presentation.dto.UserCreateRequest;
 import com.project.carpool.user.presentation.dto.UserNameUpdateRequest;
 import com.project.carpool.user.presentation.dto.UserPasswordUpdateRequest;
@@ -21,23 +22,43 @@ public class UserController {
         userService.joinUser(request);
         return ResponseEntity.ok().build();
     }
+    //회원 탈퇴
+    @DeleteMapping
+    public ResponseEntity<Void> deleteUser(){
+        userService.deleteUser();
+        return ResponseEntity.ok().build();
+    }
     @GetMapping("/id")
     public ResponseEntity<Long> getCurrentUserId() {
         log.info("getCurrentUserId");
         return ResponseEntity.ok().body(userService.getCurrentUserId());
     }
 
-    @PostMapping
+    @PostMapping("/name")
     public ResponseEntity<Void> updateName(@RequestBody @Validated UserNameUpdateRequest request){
         userService.updateName(request);
         return ResponseEntity.ok().build();
     }
+    @PostMapping("/password/check")
     public ResponseEntity<Boolean> checkPassword(@RequestBody @Validated UserPasswordUpdateRequest request){
         return ResponseEntity.ok().body(userService.checkPassword(request));
     }
-    @PostMapping
+    @PostMapping("/password")
     public ResponseEntity<Void> updatePassword(@RequestBody @Validated UserPasswordUpdateRequest request){
         userService.updatePassword(request);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/star")
+    public ResponseEntity<Void> updateStar(@RequestBody @Validated StarUpdateRequest request){
+        userService.updateStar(request);
+        return ResponseEntity.ok().build();
+    }
+
+    //별점 조회
+    @GetMapping("/star")
+    public ResponseEntity<Long> getStar(){
+        return ResponseEntity.ok().body(userService.getStar());
+    }
+
 }

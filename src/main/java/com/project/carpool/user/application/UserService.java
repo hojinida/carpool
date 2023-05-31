@@ -9,6 +9,7 @@ import com.project.carpool.common.exception.ErrorCode;
 import com.project.carpool.user.application.dto.UserCreateResponse;
 import com.project.carpool.user.domain.User;
 import com.project.carpool.user.domain.repository.UserRepository;
+import com.project.carpool.user.presentation.dto.StarUpdateRequest;
 import com.project.carpool.user.presentation.dto.UserCreateRequest;
 import com.project.carpool.user.presentation.dto.UserNameUpdateRequest;
 import com.project.carpool.user.presentation.dto.UserPasswordUpdateRequest;
@@ -64,6 +65,12 @@ public class UserService {
                 .build();
     }
 
+    //회원 탈퇴
+    public void deleteUser(){
+        User user = userRepository.findByEmail(SecurityUtil.getCurrentUserEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        userRepository.delete(user);
+    }
     //회원 아이디
     public Long getCurrentUserId(){
         User user =userRepository.findByEmail(SecurityUtil.getCurrentUserEmail())
@@ -90,5 +97,17 @@ public class UserService {
         User user = userRepository.findByEmail(SecurityUtil.getCurrentUserEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         return passwordEncoder.matches(request.getPassword(), user.getPassword());
+    }
+    public void updateStar(StarUpdateRequest request){
+        User user = userRepository.findByEmail(SecurityUtil.getCurrentUserEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        user.getStar().updateStar(request.getPoint());
+    }
+
+    //별점 조회
+    public Long getStar(){
+        User user = userRepository.findByEmail(SecurityUtil.getCurrentUserEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        return user.getStar().getPoint();
     }
 }
