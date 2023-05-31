@@ -28,6 +28,9 @@ public class User implements UserDetails {
     public void updateRoom(Room room){
         this.room = room;
     }
+    public void updateName(String name){
+        this.name=name;
+    }
     @Builder
     public User(String email, String password, String name, String phoneNumber) {
         this.email = email;

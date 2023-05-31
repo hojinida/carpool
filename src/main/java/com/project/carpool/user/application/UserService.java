@@ -10,6 +10,7 @@ import com.project.carpool.user.application.dto.UserCreateResponse;
 import com.project.carpool.user.domain.User;
 import com.project.carpool.user.domain.repository.UserRepository;
 import com.project.carpool.user.presentation.dto.UserCreateRequest;
+import com.project.carpool.user.presentation.dto.UserNameUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -67,5 +68,12 @@ public class UserService {
         User user =userRepository.findByEmail(SecurityUtil.getCurrentUserEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         return user.getId();
+    }
+
+    //회원 이름 변경
+    public void updateName(UserNameUpdateRequest request){
+        User user = userRepository.findByEmail(SecurityUtil.getCurrentUserEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        user.updateName(request.getName());
     }
 }

@@ -2,6 +2,7 @@ package com.project.carpool.user.presentation;
 
 import com.project.carpool.user.application.UserService;
 import com.project.carpool.user.presentation.dto.UserCreateRequest;
+import com.project.carpool.user.presentation.dto.UserNameUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +24,11 @@ public class UserController {
     public ResponseEntity<Long> getCurrentUserId() {
         log.info("getCurrentUserId");
         return ResponseEntity.ok().body(userService.getCurrentUserId());
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> updateName(@RequestBody @Validated UserNameUpdateRequest request){
+        userService.updateName(request);
+        return ResponseEntity.ok().build();
     }
 }
