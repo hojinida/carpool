@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/user")
@@ -61,4 +60,15 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getStar());
     }
 
+    @GetMapping("/ready")
+    public ResponseEntity<Void> ready(){
+        userService.ready();
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/complete")
+    public ResponseEntity<Void> complete(){
+        userService.complete();
+        return ResponseEntity.ok().build();
+    }
 }

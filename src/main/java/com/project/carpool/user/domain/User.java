@@ -21,8 +21,9 @@ public class User implements UserDetails {
     private String password;
     private String name;
     private String phoneNumber;
+    private Status status;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Star star;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,6 +45,18 @@ public class User implements UserDetails {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.star = Star.builder().point(0L).number(0L).build();
+        this.status= Status.WAIT;
+    }
+
+    public void statusReady(){
+        this.status= Status.READY;
+    }
+
+    public void statusWait(){
+        this.status=Status.WAIT;
+    }
+    public void statusComplete(){
+        this.status=Status.COMPLETE;
     }
 
     @Override

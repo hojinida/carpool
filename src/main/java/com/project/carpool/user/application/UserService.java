@@ -7,6 +7,7 @@ import com.project.carpool.auth.support.SecurityUtil;
 import com.project.carpool.common.exception.CustomException;
 import com.project.carpool.common.exception.ErrorCode;
 import com.project.carpool.user.application.dto.UserCreateResponse;
+import com.project.carpool.user.domain.Status;
 import com.project.carpool.user.domain.User;
 import com.project.carpool.user.domain.repository.UserRepository;
 import com.project.carpool.user.presentation.dto.StarUpdateRequest;
@@ -109,5 +110,21 @@ public class UserService {
         User user = userRepository.findByEmail(SecurityUtil.getCurrentUserEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         return user.getStar().getPoint();
+    }
+
+    public void ready(){
+        User user = userRepository.findByEmail(SecurityUtil.getCurrentUserEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        if(user.getStatus()== Status.READY && user.getStatus() != Status.COMPLETE){
+            user.statusWait();
+        }else{
+            user.statusReady();
+        }
+    }
+
+    public void complete(){
+        User user = userRepository.findByEmail(SecurityUtil.getCurrentUserEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        user.statusComplete();
     }
 }
